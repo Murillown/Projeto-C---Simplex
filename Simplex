@@ -1,1 +1,50 @@
 // INICICIALIZAÇÃO DO PROJETO, FORMS //
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+ // VF = Variavel de folga
+ // VB = Variavel básicas
+ 
+namespace Simplex
+{
+    public partial class Simplex : Form
+    {
+        public Simplex()
+        {
+            InitializeComponent();
+        }
+
+        static int VF, VB,ilimitada = 0, validar = 0; 
+        float[,] Matriz = new float[0, 0];
+        float[,] MatrizIlimitada = new float[0, 0];
+        DataTable Tabela = new DataTable();
+
+        private void btGerarMatriz_Click(object sender, EventArgs e)
+        {
+
+            if (rdMaximizacao.Checked)
+            {
+                rdMinimizacao.Enabled = false;
+            }
+            else if (rdMinimizacao.Checked)
+            {
+                rdMaximizacao.Enabled = false;
+            }
+            else { MessageBox.Show("Selecione um tipo!", "Erro"); }
+
+
+            if (rdMaximizacao.Checked || rdMinimizacao.Checked)
+            {
+
+                if (txtVF.Text != "" && txtVB.Text != "") {
+                    VF = Convert.ToInt32(txtVF.Text);
+                    VB = Convert.ToInt32(txtVB.Text); }
+
