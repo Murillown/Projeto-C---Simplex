@@ -48,3 +48,84 @@ namespace Simplex
                     VF = Convert.ToInt32(txtVF.Text);
                     VB = Convert.ToInt32(txtVB.Text); }
 
+//Verificação de Matriz
+                if (VF > 0 && VB > 0)
+                {
+
+                   // Inicio DataGrid
+
+                    //Criando tabela
+                    DataTable TabelaAux = new DataTable();
+                    TabelaAux = new DataTable();
+
+
+                    //Tabela recebe coluna Base
+                    TabelaAux.Columns.Add("Base", typeof(string));
+
+
+                    //Tabela recebe colunas [X, F e B]
+                    for (int coluna = 1; coluna <= VB; coluna++)
+                        TabelaAux.Columns.Add("X" + coluna, typeof(float));
+
+                    for (int coluna = 1; coluna <= VF; coluna++)
+                        TabelaAux.Columns.Add("F" + coluna, typeof(float));
+
+                    TabelaAux.Columns.Add("B", typeof(float));
+
+
+                    //OBJECT LINHA RECEBE QUANTIDADE DE COLUNAS
+                    object[] Linha = new object[TabelaAux.Columns.Count];
+
+
+                    //TABELA RECEBE QUANTIDADE DE LINHAS (FOLGA), E VALORES (TODAS)
+                    for (int linha = 1; linha <= VF; linha++)
+                    {
+                        Linha[0] = ("F" + linha).ToString();
+                        for (int coluna = 1; coluna <= VF + VB + 1; coluna++)
+                        {
+                            if (TabelaAux.Columns[coluna].ColumnName.ToString() == "F" + linha.ToString()) { Linha[coluna] = 1.0; }
+                            else { Linha[coluna] = 0.0; }
+                        }
+                        TabelaAux.Rows.Add(Linha);
+                    }
+
+
+                    //TABELA RECEBE LINHA Z
+                    for (int linha = VF; linha <= VF; linha++)
+                    {
+                        Linha[0] = ("Z").ToString();
+                        for (int coluna = 1; coluna < VF + VB + 1; coluna++) { Linha[coluna] = 0.0; }
+                        TabelaAux.Rows.Add(Linha);
+                    }
+
+
+                    tabelaMatriz.AllowUserToAddRows = false;
+                    tabelaMatriz.AllowUserToOrderColumns = false;
+                    tabelaMatriz.DataSource = TabelaAux;
+                    tabelaMatriz.Update();
+                    tabelaMatriz.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
+                    //--FIM DE DATAGRIDVIEW--//
+
+
+                    //TABELA GLOBAL RECEBE ENDEREÇO DA TABELAAUX
+                    Tabela = TabelaAux;
+
+                    Matriz = new float[VF + 1, VF + VB + 1];
+                    MatrizIlimitada = new float[VF + 1, VB + VF + 1];
+
+
+                    //MATRIZAUX RECEBE VALORES DA TABELA//
+                    for (int linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (int coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            Matriz[linha, coluna] = float.Parse(TabelaAux.Rows[linha][coluna + 1].ToString());
+                        }
+                    }
+                }
+                else { MessageBox.Show("Matriz Inválida!", "Erro"); rdMaximizacao.Enabled = true; rdMinimizacao.Enabled = true; }
+            }
+        }
+
+
+
