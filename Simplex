@@ -45,11 +45,12 @@ namespace Simplex
                     VF = Convert.ToInt32(txtVF.Text);
                     VB = Convert.ToInt32(txtVB.Text); }
 
-//Verificação de Matriz
+                
+                //Verificação de Matriz
                 if (VF > 0 && VB > 0)
                 {
 
-                   // Inicio DataGrid
+                   // Inicio DataGrid 
 
                     //Criando tabela
                     DataTable TabelaAux = new DataTable();
@@ -70,11 +71,11 @@ namespace Simplex
                     TabelaAux.Columns.Add("B", typeof(float));
 
 
-                    //OBJECT LINHA RECEBE QUANTIDADE DE COLUNAS
+                    //linha recebe quantidade de colunas
                     object[] Linha = new object[TabelaAux.Columns.Count];
 
 
-                    //TABELA RECEBE QUANTIDADE DE LINHAS (FOLGA), E VALORES (TODAS)
+                    //tabela recebe a quantidade de linhas e valores
                     for (int linha = 1; linha <= VF; linha++)
                     {
                         Linha[0] = ("F" + linha).ToString();
@@ -87,7 +88,7 @@ namespace Simplex
                     }
 
 
-                    //TABELA RECEBE LINHA Z
+                    //tabela recebendo linha Z
                     for (int linha = VF; linha <= VF; linha++)
                     {
                         Linha[0] = ("Z").ToString();
@@ -101,17 +102,17 @@ namespace Simplex
                     tabelaMatriz.DataSource = TabelaAux;
                     tabelaMatriz.Update();
                     tabelaMatriz.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
-                    //--FIM DE DATAGRIDVIEW--//
+                    //-------------------------------------------//
 
 
-                    //TABELA GLOBAL RECEBE ENDEREÇO DA TABELAAUX
+                    //tabela principal recebendo endereço da auxiliar 
                     Tabela = TabelaAux;
 
                     Matriz = new float[VF + 1, VF + VB + 1];
                     MatrizIlimitada = new float[VF + 1, VB + VF + 1];
 
 
-                    //MATRIZAUX RECEBE VALORES DA TABELA//
+                    //matriz auxiliar recebendo valores da tabela
                     for (int linha = 0; linha < Matriz.GetLength(0); linha++)
                     {
                         for (int coluna = 0; coluna < Matriz.GetLength(1); coluna++)
@@ -120,11 +121,13 @@ namespace Simplex
                         }
                     }
                 }
-                else { MessageBox.Show("Matriz Inválida!", "Erro!"); rdMaximizacao.Enabled = true; rdMinimizacao.Enabled = true; }
+                else { MessageBox.Show("Matriz Inválida!", "Erro"); rdMaximizacao.Enabled = true; rdMinimizacao.Enabled = true; }
             }
         }
 
-        //--LIMPAR TABELA--//
+
+
+        //Reiniciar(limpar tabela)
         private void btLimparMatriz_Click(object sender, EventArgs e)
         {
             txtVF.Text = String.Empty;
@@ -142,5 +145,374 @@ namespace Simplex
             validar = 0;
             ilimitada = 0;
         }
+        //-------------------------------------------//
 
 
+
+        //Iteraçao
+        private void btInteracao_Click(object sender, EventArgs e)
+        {
+            if (rdMaximizacao.Checked)
+            {
+                 IteracaoMax(Matriz); 
+            }
+            else if(rdMinimizacao.Checked) {
+
+               IteracaoMin(Matriz);
+            }
+            else
+            {
+                MessageBox.Show("Selecione um tipo!", "Erro");
+            }
+        }
+        //-------------------------------------------//
+
+
+
+        //-iteraçao de minizaçao
+        public float[,] IteracaoMin(float[,] Matriz)
+        {
+            int LinhaPivo = 0, ColunaPivo = 0, linha = 0, coluna = 0;
+            float Pivo = 0, MaiorValorZ = 0, Aux = 0, PrimeiraDivisao = 0;
+            int cont = 0;
+            bool igual = true;
+           
+                //matriz recebe valores da tabela
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        Matriz[linha, coluna] = float.Parse(Tabela.Rows[linha][coluna + 1].ToString());
+                    }
+                }
+
+
+                //criação matriz auxiliar
+                float[,] MatrizAux = new float[VF + 1, VB + VF + 1];
+
+
+                //passagem de valores da matriz principal para a auxiliar
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        MatrizAux[linha, coluna] = Matriz[linha, coluna];
+                    }
+                }
+
+
+                //verificação da linha z se existem valores positivos 
+                for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                {
+                    if (Matriz[(Matriz.GetLength(0) - 1), coluna] > 0) { cont = 1; }
+                }
+
+
+                if (cont != 1)
+                    MessageBox.Show("Não há iterações a serem feitas!", "Erro");
+
+
+                if (cont == 1)
+                {
+
+                    //valor maior da linha z
+                    for (linha = (Matriz.GetLength(0) - 1); linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1)-1; coluna++)
+                        {
+                            if ((Matriz[linha, coluna] > 0) && (Matriz[linha, coluna] > MaiorValorZ))
+                            {
+                                MaiorValorZ = Matriz[linha, coluna]; ColunaPivo = coluna;
+                            }
+                        }
+                    }
+
+
+                    //valor menor da linha b
+                    PrimeiraDivisao = Matriz[0, (Matriz.GetLength(1) - 1)] / Matriz[0, ColunaPivo];
+                    for (linha = 0; linha < (Matriz.GetLength(0) - 1); linha++)
+                    {
+                        for (coluna = Matriz.GetLength(1) - 1; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            if (Matriz[linha, coluna] / Matriz[linha, ColunaPivo] < PrimeiraDivisao && Matriz[linha, coluna] / Matriz[linha, ColunaPivo] > 0)
+                            {
+                                Aux = Matriz[linha, coluna]; LinhaPivo = linha;
+                            }
+                        }
+                    }
+
+
+                    //pivo
+                    Pivo = Matriz[LinhaPivo, ColunaPivo];
+
+
+                    //divisão da linha pelo pivo
+                    for (linha = LinhaPivo; linha <= LinhaPivo; linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            Matriz[linha, coluna] /= Pivo; MatrizAux[linha, coluna] = Matriz[linha, coluna];
+                        }
+                    }
+
+
+                    //coluna pivo sendo zerada
+                    for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            if (linha != LinhaPivo)
+                            {
+                                MatrizAux[linha, coluna] = Matriz[LinhaPivo, coluna] * (-1 * Matriz[linha, ColunaPivo]) + Matriz[linha, coluna];
+                            }
+                        }
+                    }
+
+
+                    //passagem de valores da matriz auxiliar para a principal
+                    for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            Matriz[linha, coluna] = MatrizAux[linha, coluna];
+                        }
+                    }
+
+
+                    //tabela recebendo valores da matriz
+                    for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            Tabela.Rows[linha][coluna + 1] = (Matriz[linha, coluna].ToString());
+                        }
+                    }
+
+
+                    //coluna entrando e linha saindo
+                    Tabela.Rows[LinhaPivo][0] = (Tabela.Columns[ColunaPivo + 1].ColumnName.ToString());
+
+
+                    //verificação se matriz é ilimitada
+                    for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        if (igual != true)
+                        {
+                            break;
+                        }
+
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            if (MatrizIlimitada[linha, coluna] != Matriz[linha, coluna])
+                            {
+                                igual = false;
+                                break;
+                            }
+                            else { validar = 2; }
+                        }
+                    }
+
+
+                    //matriz ilimitada recebendo a primeira iteração da matriz
+                    if (ilimitada == 0)
+                    {
+                        for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                        {
+                            for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                            {
+                                MatrizIlimitada[linha, coluna] = Matriz[linha, coluna];
+                            }
+                        }
+                        ilimitada = 1;
+                    }
+                    //-------------------------------//
+                }
+            return (Matriz);
+        }
+        //-----------------------------//
+
+
+
+        //-inicialização da iteração de maximizaão
+        public float[,] IteracaoMax(float[,] Matriz)
+        {
+            int LinhaPivo = 0, ColunaPivo = 0, linha = 0, coluna = 0;
+            float Pivo = 0, MenorValorZ = 0, Aux = 0, PrimeiraDivisao = 0;
+            int cont = 0;
+            bool igual = true;
+            
+
+            //matriz recebenfo valores da tabela
+            for (linha = 0; linha < Matriz.GetLength(0); linha++)
+            {
+                for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                {
+                    Matriz[linha, coluna] = float.Parse(Tabela.Rows[linha][coluna + 1].ToString());
+                }
+            }
+
+
+            //criação da matriz auxiliar
+            float[,] MatrizAux = new float[VF + 1, VB + VF + 1];
+
+
+            //passagem de valores da matriz principal para a matriz auxiliar
+            for (linha = 0; linha < Matriz.GetLength(0); linha++)
+            {
+                for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                {
+                    MatrizAux[linha, coluna] = Matriz[linha, coluna];
+                }
+            }
+
+
+
+            //verificação de valores negativos na linha Z
+            for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+            {
+                if (Matriz[(Matriz.GetLength(0) - 1), coluna] < 0) { cont = 1; }
+            }
+
+           
+
+            if (cont != 1)
+                MessageBox.Show("Não há iterações a serem feitas!", "Erro");
+
+
+            if (cont == 1)
+            {
+
+                //verificação de menor valor da linha Z
+                for (linha = (Matriz.GetLength(0) - 1); linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1)-1; coluna++)
+                    {
+                        if ((Matriz[linha, coluna] < 0) && (Matriz[linha, coluna] < MenorValorZ))
+                        {
+                            MenorValorZ = Matriz[linha, coluna]; ColunaPivo = coluna;
+                        }
+                    }
+                }
+
+
+                //verificação de menor valor B
+                PrimeiraDivisao = Matriz[0, (Matriz.GetLength(1) - 1)] / Matriz[0, ColunaPivo];
+                for (linha = 0; linha < (Matriz.GetLength(0) - 1); linha++)
+                {
+                    for (coluna = Matriz.GetLength(1) - 1; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        if (Matriz[linha, coluna] / Matriz[linha, ColunaPivo] < PrimeiraDivisao && Matriz[linha, coluna] / Matriz[linha, ColunaPivo] > 0)
+                        {
+                            Aux = Matriz[linha, coluna]; LinhaPivo = linha;
+                        }
+                    }
+                }
+
+
+                //pivo
+                Pivo = Matriz[LinhaPivo, ColunaPivo];
+
+
+                //divisão da linha pelo pivo
+                for (linha = LinhaPivo; linha <= LinhaPivo; linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        Matriz[linha, coluna] /= Pivo; MatrizAux[linha, coluna] = Matriz[linha, coluna];
+                    }
+                }
+
+
+                //coluna do pivo sendo zerada
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        if (linha != LinhaPivo)
+                        {
+                            MatrizAux[linha, coluna] = Matriz[LinhaPivo, coluna] * (-1 * Matriz[linha, ColunaPivo]) + Matriz[linha, coluna];
+                        }
+                    }
+                }
+
+
+                //passagem de valores da matriz auxiliar para a matriz principal
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        Matriz[linha, coluna] = MatrizAux[linha, coluna];
+                    }
+                }
+
+
+                //tabela recebendo valores da matriz
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        Tabela.Rows[linha][coluna + 1] = (Matriz[linha, coluna].ToString());
+                    }
+                }
+
+
+                //coluna entrando e linha saindo
+                Tabela.Rows[LinhaPivo][0] = (Tabela.Columns[ColunaPivo + 1].ColumnName.ToString());
+
+
+                //verificação de matriz para saber se é ilimitada
+                for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                {
+                    if (igual != true)
+                    {
+                        break;
+                    }
+
+                    for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                    {
+                        if (MatrizIlimitada[linha, coluna] != Matriz[linha, coluna])
+                        {
+                            igual = false;
+                            break;
+                        }
+                        else { validar = 2; }
+                    }
+                }
+
+
+                //matriz ilimitada recebendo primeira iteração da matriz
+                if (ilimitada == 0)
+                {
+                    for (linha = 0; linha < Matriz.GetLength(0); linha++)
+                    {
+                        for (coluna = 0; coluna < Matriz.GetLength(1); coluna++)
+                        {
+                            MatrizIlimitada[linha, coluna] = Matriz[linha, coluna];
+                        }
+                    }
+                    ilimitada = 1;
+                }
+                //------------------------//
+
+            }
+            return (Matriz);
+        }
+        //-----------------------------------------//
+
+        //-inicialização da geração do resultado
+        private void btResultado_Click(object sender, EventArgs e)
+        {
+            lstResultado.Items.Clear();
+            if (Tabela.Rows.Count > 0)
+            {
+                for (int linha = 0; linha < Tabela.Rows.Count; linha++)
+                {
+                    lstResultado.Items.Add(Tabela.Rows[linha][0].ToString() + " = " + float.Parse(Tabela.Rows[linha][VF + VB + 1].ToString()).ToString("N1"));
+                }
+            }
+            else
+                MessageBox.Show("Crie uma Matriz!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        //--------------------------------//
+    }
+}
