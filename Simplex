@@ -123,9 +123,27 @@ namespace Simplex
                         }
                     }
                 }
-                else { MessageBox.Show("Matriz Inválida!", "Erro"); rdMaximizacao.Enabled = true; rdMinimizacao.Enabled = true; }
+                else { MessageBox.Show("Matriz Inválida!", "Erro!"); rdMaximizacao.Enabled = true; rdMinimizacao.Enabled = true; }
             }
         }
 
+        //--LIMPAR TABELA--//
+        private void btLimparMatriz_Click(object sender, EventArgs e)
+        {
+            txtVF.Text = String.Empty;
+            txtVB.Text = String.Empty;
+            tabelaMatriz.Columns.Clear();
+            Tabela.Rows.Clear();
+            Tabela.Columns.Clear();
+            lstResultado.Items.Clear();
+            rdMinimizacao.Enabled = true;
+            rdMaximizacao.Enabled = true;
+            VF = 0;
+            VB = 0;
+            Matriz = new float[0, 0];
+            MatrizIlimitada = new float[0, 0];
+            validar = 0;
+            ilimitada = 0;
+        }
 
 
