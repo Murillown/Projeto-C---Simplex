@@ -162,7 +162,7 @@ namespace Simplex
             }
             else
             {
-                MessageBox.Show("Selecione um tipo!", "Erro");
+                MessageBox.Show("Selecione um dos tipo!", "Erro!");
             }
         }
         //-------------------------------------------//
@@ -209,7 +209,7 @@ namespace Simplex
 
 
                 if (cont != 1)
-                    MessageBox.Show("Não há iterações a serem feitas!", "Erro");
+                    MessageBox.Show("Não há iterações a serem feitas!", "Erro!" , MessageBoxButtons.OK);
 
 
                 if (cont == 1)
