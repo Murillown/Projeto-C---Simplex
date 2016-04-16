@@ -1,0 +1,62 @@
+%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="simplex.index" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <h3>Quantidade de Variáveis</h3>
+        Variáveis básicas
+        <input type="text" id="ttbBasica" name="name" runat="server" required/>
+        <br />
+        
+        Variáveis de Folga
+        <input type="text" id="ttbFolga" name="name" runat="server" required/>
+
+        </br>
+        Preencha as variáveis básicas:
+        </br>
+        X1
+        <asp:TextBox id="tb1" name="X1" runat="server" required />
+        <br />
+        X2
+        <asp:TextBox id="tb2" name="X2" runat="server" required />
+        <br />
+         X3
+        <asp:TextBox id="tb3" name="X3" runat="server" />
+         <br />
+        X4
+        <asp:TextBox id="tb4" name="X4" runat="server" />
+         <br />
+        X5
+        <asp:TextBox id="Tb5" name="X5" runat="server" />
+
+        <h3>Tipo</h3>
+        <asp:RadioButtonList runat="server" ID="rblTipo">
+            <asp:ListItem Text="Maximização" Value="1" />
+            <asp:ListItem Text="Minimização" value="2"/>
+        </asp:RadioButtonList>
+
+        <h3>Tabela Simplex</h3>
+        <asp:GridView runat="server" ID="gdvTabSimplex">
+
+        </asp:GridView>
+
+        <h3>Resultado</h3>
+        <asp:GridView runat="server" ID="gdvResultado">
+
+        </asp:GridView>
+
+        <br />
+        <asp:Button Text="Gerar Matriz" ID="btnGerarMatriz" runat="server" OnClick="btnGerarMatriz_Click" />
+        <asp:Button Text="Iteração" runat="server" ID="btnIteracao" OnClick="btnIteracao_Click" />
+        <asp:Button Text="Limpar Matriz" runat="server" id="btnLimpar" OnClick="btnLimpar_Click"/>
+        <asp:Button Text="Gerar Resultados" runat="server" ID="btnGerarResultados" OnClick="btnGerarResultados_Click" />
+    </div>
+    </form>
+</body>
+</html>
