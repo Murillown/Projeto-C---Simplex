@@ -2,14 +2,19 @@
 
 Projeto Simplex - Algoritimo
 
-Murilo Martins - 541168
-Mighuel Lucas Rodrigues - 54293
-Robson Kumagai - 538371
-Gustavo Terto - 53111
+#Integrantes
 
-Projeto feito em C#, com Visual Studio(Windows Form), sem banco de dados.
+1. Murilo Martins - 541168
+2. Mighuel Lucas Rodrigues - 54293
+3. Robson Kumagai - 538371
+4. Gustavo Terto - 53111
+
+#Ferramentas
+
+- Visual Studio 2015
+- Microsoft Azure
+
+#Simplex
 
 Variaveis ilimitidas, sendo possivel maximizar e minimizar conforme necessidade.
 
-#Updates Futuros:
-Windows Web Form com Azure.
