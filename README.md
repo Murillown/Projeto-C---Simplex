@@ -13,7 +13,7 @@ Projeto Simplex e Mochila- Algoritimo
 
 - Wamp Server
 - Sublime
-- 
+
 #Linguaguem
 
 - PHP
