@@ -1,20 +1,28 @@
-#MetodoSimplex
+#Projeto Simplex
 
-Projeto Simplex - Algoritimo
+Projeto Simplex e Mochila- Algoritimo
 
 #Integrantes
 
 1. Murilo Martins - 541168
 2. Mighuel Lucas Rodrigues - 54293
 3. Robson Kumagai - 538371
-4. Gustavo Terto - 53111
+
 
 #Ferramentas
 
-- Visual Studio 2015
-- Microsoft Azure
+- Wamp Server
+- Sublime
+- 
+#Linguaguem
 
-#Simplex
+- PHP
 
-Variaveis ilimitidas, sendo possivel maximizar e minimizar conforme necessidade.
+#Conteudo do sistema
+
+- Variaveis Ilimitadas
+- Maximizar
+- Minimizar
+- Analise de Sensibilidade
+- Mochila
 
