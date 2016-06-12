@@ -1,7 +1,10 @@
-#Projeto Simplex
+#Projeto de Pesquisa Operacional
 
-Projeto Simplex e Mochila- Algoritimo
+Simplex e Mochila - Algoritimo
 
+#Hospedagem online
+
+http://mochila.simple4it.com/
 
 #Integrantes
 
@@ -83,8 +86,8 @@ Além disso, há a liberação do aplicativo da Mochila, onde há um problema de
 | 24/04/2016    | Criada opção de exibir passo a passo ou somente resultado final.  |
 | 24/04/2016    | Variáveis básicas e não básicas incluídas.    |
 | 28/04/2016    | Entrega da versão final do projeto(apenas o metedo simplex).   |
-| 28/04/2016    | Projeto disponibilizado no github para download (localhost) apenas.  |
-|
+| 28/05/2016    | Projeto disponibilizado no github para download (localhost) apenas.  |
+| 12/06/2016    | Projeto online  |
 
 
 ### Mochila
@@ -95,6 +98,7 @@ Além disso, há a liberação do aplicativo da Mochila, onde há um problema de
 | 29/05/2016    | Estrutura da aplicação reutilizada do Simplex.   |
 | 30/05/2016    | Aplicação base criada.   |
 | 30/05/2016    | Layout simples criado.   |
+| 12/06/2016    | Projeto online.  |
 
 ## Compatibilidade
 
@@ -109,7 +113,7 @@ Além disso, há a liberação do aplicativo da Mochila, onde há um problema de
 | Back-end  | PHP  |
 | Frameworks    | Lavarel     |
 | Design Pattern    | MVC   |
-| Servidor  | LocalHost |
+| Servidor  | LSimple4it |
 
 
 ## Atividades realizadas no período
